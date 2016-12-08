@@ -12,9 +12,14 @@ import android.widget.TextView;
 import com.quidinitest.R;
 import com.quidinitest.httpsRequests.ProfileImageRequestClient;
 import com.quidinitest.models.Customer;
+import com.quidinitest.utilities.TimeUtils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapter.ViewHolder> {
 
@@ -22,6 +27,7 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
     private Context mContext;
 
     public CustomerListAdapter(List<Customer> customerList, Context context){
+        sortCustomerList(customerList);
         this.customerList = customerList;
         this.mContext = context;
     }
@@ -53,9 +59,19 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
 
     @Override
     public void onBindViewHolder(CustomerListAdapter.ViewHolder holder, int position) {
-        holder.name.setText(customerList.get(position).getName());
-        holder.expectedTime.setText(customerList.get(position).getExpectedTime());
-        ProfileImageRequestClient.loadImageView(holder.profileImage, customerList.get(position).getEmailAddress(), mContext);
+        try {
+            holder.name.setText(customerList.get(position).getName());
+            long expectedTimeInMillis = TimeUtils.convertTimeStampToMilli(customerList.get(position).getExpectedTime());
+            String expectedTimeHumanReadable = TimeUtils.convertTimeToClockFormat(expectedTimeInMillis);
+
+            String expectedTimeText = String.format(Locale.getDefault(), "%s %s",
+                    mContext.getResources().getString(R.string.expected_time), expectedTimeHumanReadable);
+            holder.expectedTime.setText(expectedTimeText);
+            ProfileImageRequestClient.loadImageView(holder.profileImage, customerList.get(position).getEmailAddress(), mContext);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -63,10 +79,25 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
         return customerList.size();
     }
 
-    public void update(ArrayList<Customer> customers){
+    public void update(List<Customer> customers){
         customerList.clear();
         customerList.addAll(customers);
         notifyDataSetChanged();
+    }
+
+    public void sortCustomerList(List<Customer> customers){
+        Collections.sort(customerList, new Comparator<Customer>() {
+            @Override public int compare(Customer c1, Customer c2) {
+                int r = 0;
+                try {
+                    r = TimeUtils.convertTimeStampToMilli(c1.getExpectedTime()).compareTo(TimeUtils.convertTimeStampToMilli(c2.getExpectedTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return r;
+            }
+
+        });
     }
 
 

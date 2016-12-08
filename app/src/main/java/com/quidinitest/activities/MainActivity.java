@@ -1,11 +1,11 @@
 package com.quidinitest.activities;
 
 import android.Manifest;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,8 +15,8 @@ import com.quidinitest.adapters.CustomerListAdapter;
 import com.quidinitest.httpsRequests.CustomerRequestClient;
 import com.quidinitest.models.Customer;
 import com.quidinitest.permissions.Permissions;
-import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         mCustomerListRecyclerView = (RecyclerView) findViewById(R.id.customerListRecyclerView);
         setUpCustomerListAdapter();
-
-
-
+        scheduleRefresh();
     }
 
     private void setUpCustomerListAdapter() {
@@ -50,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try{
+                    mCustomers = new ArrayList<>();
                     mCustomers = CustomerRequestClient.getCustomers();
                     setUpCustomerListAdapterHandler.sendEmptyMessage(0);
                 } catch(Exception e){
@@ -60,6 +59,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void scheduleRefresh() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                setUpCustomerListAdapter();
+                handler.postDelayed(this, 30000);
+            }
+        }, 30000);
+    }
+
+
+
     final Handler setUpCustomerListAdapterHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message message) {
@@ -69,4 +80,7 @@ public class MainActivity extends AppCompatActivity {
             mCustomerListRecyclerView.setAdapter(mCustomerListAdapter);
         }
     };
+
+
+
 }
