@@ -14,8 +14,6 @@
         android:layout_marginBottom="4dp"
         android:layout_height="wrap_content"
         android:id="@+id/name"/>
-    <!--android:layout_toEndOf="@+id/profileImage"-->
-    <!--android:layout_toRightOf="@+id/profileImage"-->
 
     <TextView
         android:layout_width="match_parent"
@@ -26,12 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
         android:id="@+id/expectedTimeVal"/>
-        <!--android:layout_toEndOf="@+id/profileImage"-->
-        <!--android:layout_toRightOf="@+id/profileImage"-->
 
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="48dp"
+        android:layout_marginTop="4dp"
         android:layout_alignEnd="@+id/divider"
         android:layout_alignRight="@+id/divider"
         android:layout_height="48dp"
