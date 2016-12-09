@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.quidinitest.R;
 import com.quidinitest.httpsRequests.ProfileImageRequestClient;
@@ -70,6 +71,8 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
             ProfileImageRequestClient.loadImageView(holder.profileImage, customerList.get(position).getEmailAddress(), mContext);
         } catch (ParseException e) {
             e.printStackTrace();
+            holder.expectedTime.setText(mContext.getResources().getString(R.string.na));
+            Toast.makeText(mContext, mContext.getResources().getString(R.string.parseError), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -86,13 +89,15 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
     }
 
     public void sortCustomerList(List<Customer> customers){
-        Collections.sort(customerList, new Comparator<Customer>() {
+        Collections.sort(customers, new Comparator<Customer>() {
             @Override public int compare(Customer c1, Customer c2) {
                 int r = 0;
                 try {
                     r = TimeUtils.convertTimeStampToMilli(c1.getExpectedTime()).compareTo(TimeUtils.convertTimeStampToMilli(c2.getExpectedTime()));
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    Toast.makeText(mContext, mContext.getResources().getString(R.string.parseError), Toast.LENGTH_LONG).show();
+
                 }
                 return r;
             }

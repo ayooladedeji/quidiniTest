@@ -1,6 +1,5 @@
 package com.quidinitest.activities;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,7 +13,6 @@ import com.quidinitest.R;
 import com.quidinitest.adapters.CustomerListAdapter;
 import com.quidinitest.httpsRequests.CustomerRequestClient;
 import com.quidinitest.models.Customer;
-import com.quidinitest.permissions.Permissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!Permissions.checkPermission(this, Manifest.permission.INTERNET))
-            Permissions.requestPermission(this,
-                    this.getResources().getString(R.string.alert_message_write_permission),
-                    Manifest.permission.INTERNET,
-                    Permissions.REQUEST_INTERNET_PERMISSION);
-
         mCustomerListRecyclerView = (RecyclerView) findViewById(R.id.customerListRecyclerView);
         setUpCustomerListAdapter();
         scheduleRefresh();
@@ -44,18 +36,30 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpCustomerListAdapter() {
 
+        final Handler setUpCustomerListAdapterHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                mCustomerListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                mCustomerListAdapter = new CustomerListAdapter(mCustomers, getApplicationContext());
+                mCustomerListRecyclerView.setHasFixedSize(true);
+                mCustomerListRecyclerView.setAdapter(mCustomerListAdapter);
+            }
+        };
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     mCustomers = new ArrayList<>();
-                    mCustomers = CustomerRequestClient.getCustomers();
+                    mCustomers = CustomerRequestClient.getCustomers(getApplicationContext());
                     setUpCustomerListAdapterHandler.sendEmptyMessage(0);
                 } catch(Exception e){
                     Log.d(mTAG, e.getMessage());
                 }
             }
         }).start();
+
+
 
     }
 
@@ -71,15 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    final Handler setUpCustomerListAdapterHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message message) {
-            mCustomerListRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            mCustomerListAdapter = new CustomerListAdapter(mCustomers, getApplicationContext());
-            mCustomerListRecyclerView.setHasFixedSize(true);
-            mCustomerListRecyclerView.setAdapter(mCustomerListAdapter);
-        }
-    };
+
 
 
 

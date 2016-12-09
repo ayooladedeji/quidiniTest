@@ -4,4 +4,8 @@
     <string name="OK_text">OK</string>
     <string name="alert_message_write_permission">In order to use this application you must allow it to access your location!</string>
     <string name="expected_time">Expected time:</string>
+    <string name="parseError">Unable to read expected time value(s)</string>
+    <string name="na">N/A</string>
+    <string name="unableToLoadCustomers">Currently unable to load customers</string>
+    <string name="unableToLoadProfileImages">Unable to load some customer profile images</string>
 </resources>

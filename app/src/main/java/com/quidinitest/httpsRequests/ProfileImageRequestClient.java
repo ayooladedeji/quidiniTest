@@ -4,11 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.quidinitest.R;
-import com.quidinitest.permissions.Permissions;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -22,7 +25,6 @@ public class ProfileImageRequestClient {
     private static final String mTAG = "ProfileImageRequest";
     private static final String URL = "http://www.gravatar.com/avatar/";
 
-    //private static ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     public static void loadImageView(final ImageView imageView, final String email, final Context context) {
 
@@ -36,13 +38,20 @@ public class ProfileImageRequestClient {
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
                 Log.e(mTAG, "The image was not obtained");
+
+                final Handler sendErrorToast = new Handler(Looper.getMainLooper()) {
+                    @Override
+                    public void handleMessage(Message message) {
+                        Toast.makeText(context, context.getResources().getString(R.string.unableToLoadProfileImages), Toast.LENGTH_LONG).show();
+
+                    }
+                };
+                sendErrorToast.sendEmptyMessage(0);
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
                 Log.i(mTAG, "Getting ready to get the image");
-                //Here you should place a loading gif in the ImageView to
-                //while image is being obtained.
             }
         });
 

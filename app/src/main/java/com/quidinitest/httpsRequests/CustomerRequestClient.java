@@ -1,8 +1,16 @@
 package com.quidinitest.httpsRequests;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.quidinitest.R;
+import com.quidinitest.adapters.CustomerListAdapter;
 import com.quidinitest.models.Customer;
 
 import org.json.JSONArray;
@@ -14,7 +22,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CustomerRequestClient {
@@ -22,11 +29,11 @@ public class CustomerRequestClient {
     private static final String mTAG = "CustomerRequestClient";
     private static final String endPoint = "https://app.qudini.com/api/queue/gj9fs?username=codetest1&password=codetest100";
 
-    public static List<Customer> getCustomers() {
-        return sendRequestForCustomers();
+    public static List<Customer> getCustomers(Context context) {
+        return sendRequestForCustomers(context);
     }
 
-    public static List<Customer> sendRequestForCustomers() {
+    public static List<Customer> sendRequestForCustomers(final Context context) {
         List<Customer> customersList = new ArrayList<>();
 
         HttpURLConnection connection;
@@ -59,6 +66,15 @@ public class CustomerRequestClient {
 
         } catch (Exception e) {
             Log.d(mTAG, e.getMessage());
+            final Handler sendErrorToast = new Handler(Looper.getMainLooper()) {
+                @Override
+                public void handleMessage(Message message) {
+                    Toast.makeText(context, context.getResources().getString(R.string.unableToLoadCustomers), Toast.LENGTH_LONG).show();
+
+                }
+            };
+            sendErrorToast.sendEmptyMessage(0);
+
         }
 
         return customersList;
