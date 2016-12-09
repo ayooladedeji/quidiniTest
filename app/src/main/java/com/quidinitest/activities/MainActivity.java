@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private CustomerListAdapter mCustomerListAdapter;
     private List<Customer> mCustomers;
     private ProgressDialog progressDialog;
+    final Handler refreshHandler = new Handler();
 
 
     @Override
@@ -63,14 +64,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void scheduleRefresh() {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        refreshHandler.postDelayed(new Runnable() {
             public void run() {
                 setUpCustomerListAdapter();
-                handler.postDelayed(this, 30000);
+                refreshHandler.postDelayed(this, 30000);
             }
         }, 30000);
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        refreshHandler.removeCallbacksAndMessages(null);
+    }
 }
