@@ -11,6 +11,8 @@ I go on to load the profile image of customers using the customers email address
 
 The nature of the service that the app provides means that it needs to reload automatically every 30 seconds, This was acheived through the use of a ```Handler``` and its postDelayed method. Within this I call the ```setUpCustomerListAdapter()``` method, which executes the previously described API calls.
 
+The app makes sure to catch any errors that might occur on the UI and display an error message to the customer in the form of a toast.
+
 It is important when creating apps whose logic includes API requests and other 'heavy' operations like loading images to not block the main UI thread, this leads to screen hanging and a bad user experience. In order to make sure the app is fluid and responsive I provide concurrency throguh the use of threads and handlers.
 
 Another vital part of the development life cycle is a healthy amount of unit testing, the app uses AndroidJunit4 to test utilities classes, correctly populating a list of customers ect.
