@@ -17,5 +17,5 @@ It is important when creating apps whose logic includes API requests and other '
 
 Another vital part of the development life cycle is a healthy amount of unit testing. The app uses AndroidJunit4 to test utilities, classes, correctly populating a list of customers etc.
 
-In developing this way, one is able to first plan their code and then develop against their test specification. Doing this means We can be confident in our business logic before going on to develop  for the customer facing user interface.
+In developing this way, one is able to first plan their code and then develop against their test specification. Doing this means We can be confident in our business logic before going on to develop  for the customer-facing user interface.
 
