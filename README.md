@@ -9,7 +9,7 @@ This list of customers is sorted according to the expectedTime is ascending orde
 
 I go on to load the profile image of customers using their email address with the Gravatar image request API. To accomplish this I used a 3rd party library called Picasso which offers a simple way to load images directly into an id specified in an XML layout.
 
-The nature of the service that the app provides means that it needs to reload automatically every 30 seconds, This was achieved through the use of a ```Handler``` and its postDelayed method. Within this I call the ```setUpCustomerListAdapter()``` method, which executes the previously described API calls. It is also important to call ```removeCallbacksAndMessages``` in the apps activity ```onStop()```.
+The nature of the service that the app provides means that it needs to reload automatically every 30 seconds, This was achieved through the use of a ```Handler``` and its postDelayed method. Within this I call the ```setUpCustomerListAdapter()``` method, which executes the previously described API calls. It is also important to call ```removeCallbacksAndMessages``` in the apps activity ```onStop()``` to avoid any memory leaks.
 
 The app makes sure to catch any errors that might occur on the UI and display a user friendly error message to the customer in the form of a toast.
 
