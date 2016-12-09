@@ -27,6 +27,12 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
     private List<Customer> customerList = new ArrayList<>();
     private Context mContext;
 
+    /**
+     * Initialises the CustomerListAdapter
+     * @param context Current activity context
+     * @param customerList The most recent list of customers
+     */
+
     public CustomerListAdapter(List<Customer> customerList, Context context){
         sortCustomerList(customerList);
         this.customerList = customerList;
@@ -82,12 +88,10 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
         return customerList.size();
     }
 
-    public void update(List<Customer> customers){
-        customerList.clear();
-        customerList.addAll(customers);
-        notifyDataSetChanged();
-    }
-
+    /**
+     * Sorts the list of customers in ascending order
+     * @param customers the list of customers to be sorted
+     */
     public void sortCustomerList(List<Customer> customers){
         Collections.sort(customers, new Comparator<Customer>() {
             @Override public int compare(Customer c1, Customer c2) {

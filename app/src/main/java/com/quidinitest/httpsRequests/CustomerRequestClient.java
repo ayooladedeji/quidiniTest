@@ -94,7 +94,6 @@ public class CustomerRequestClient {
             customersList.add(customer);
         }
 
-        Log.d(mTAG, "SLASH");
         return customersList;
     }
 

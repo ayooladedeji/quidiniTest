@@ -8,4 +8,5 @@
     <string name="na">N/A</string>
     <string name="unableToLoadCustomers">Currently unable to load customers</string>
     <string name="unableToLoadProfileImages">Unable to load some customer profile images</string>
+    <string name="please_wait">Please Wait…</string>
 </resources>

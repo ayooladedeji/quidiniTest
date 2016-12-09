@@ -1,12 +1,9 @@
 package com.quidinitest.models;
 
-import android.widget.ImageView;
-
 public class Customer {
 
     private String mName;
     private String mExpectedTime;
-    private ImageView mProfileImage;
     private String mEmailAddress;
 
     public String getName() {
@@ -23,14 +20,6 @@ public class Customer {
 
     public void setExpectedTime(String mExpectedTime) {
         this.mExpectedTime = mExpectedTime;
-    }
-
-    public ImageView getProfileImage() {
-        return mProfileImage;
-    }
-
-    public void setProfileImage(ImageView mProfileImage) {
-        this.mProfileImage = mProfileImage;
     }
 
     public String getEmailAddress() {

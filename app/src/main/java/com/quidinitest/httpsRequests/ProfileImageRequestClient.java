@@ -18,6 +18,7 @@ import com.squareup.picasso.Target;
 import java.security.MessageDigest;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ProfileImageRequestClient {
@@ -38,7 +39,6 @@ public class ProfileImageRequestClient {
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
                 Log.e(mTAG, "The image was not obtained");
-
                 final Handler sendErrorToast = new Handler(Looper.getMainLooper()) {
                     @Override
                     public void handleMessage(Message message) {
@@ -54,7 +54,6 @@ public class ProfileImageRequestClient {
                 Log.i(mTAG, "Getting ready to get the image");
             }
         });
-
     }
 
     public static String emailToHash(String email){
